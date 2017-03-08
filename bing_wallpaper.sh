@@ -224,7 +224,8 @@ while true; do
     fi
 
     if [[ $DE = "xfce" ]]; then
-      ./xfce4_set_wallpaper.sh $saveDir$picName
+      xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s $saveDir$picName
+      exit 0
     fi
 
     if [[ $DE = "WM" ]]; then
