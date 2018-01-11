@@ -2,7 +2,7 @@
 
 It sets Bing.com wallpaper of the Day as your Linux Desktop
 
-supports XFCE4, GNOME (2 and 3) and KDE4, as well fallback to feh.
+supports XFCE4, GNOME3 and others, as well fallback to feh.
 
 ## Usage
 
@@ -22,23 +22,22 @@ Next boots it will run too, but do nothing.
 
 ## Easy commands
 
-        cd ~
-        mkdir bin
-        wget https://raw.githubusercontent.com/marguerite/linux-bing-wallpaper/master/bing_wallpaper.sh -o bin/bing_wallpaper.sh
-        # If you use KDE
-        wget https://raw.githubusercontent.com/marguerite/linux-bing-wallpaper/master/kde4_set_wallpaper.sh -o bin/kde4_set_wallpaper.sh
-        chmod +x bin/*.sh
+        cd ~/.local/
+        mkdir ./bin
+        wget https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper -o ./bin/bingwallpaper
+        chmod +x ./bin/bingwallpaper
 
         # Default behavior
-        ./bin/bing_wallpaper.sh
+        ~/.local/bin/bingwallpaper #每日壁纸更新
+        ~/.local/bin/bingwallpaper 1 #一周壁纸巡览
 
         # First param is Market
         # Second param is true to exit immediately if you want to use a cron
         # (otherwise, script will sleep 24 hrs)
-        ./bin/bing_wallpaper.sh en-US true
+        ~/.local/bin/bingwallpaper true
 
 ## Example cron usage (crontab -e for your user)
 ```
 # m h dom mon dow command
-* * * * * ~/bin/bing_wallpaper.sh en-US true
+* * * * * ~/.local/bin/bingwallpaper true
 ```
