@@ -31,7 +31,7 @@ do
 	curl -o $picDir$picName -L $picURL
     fi
     if [ "$1" = "" ];then
-        $setBG$picDir$picName
+    	$setBG$picDir$picName
 	notify-send "必应壁纸" "今日已更新"
 	exit
     fi
