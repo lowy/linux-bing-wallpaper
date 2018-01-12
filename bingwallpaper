@@ -1,27 +1,24 @@
 #!/bin/bash
 picDir="$HOME/Wallpaper/Bing/"
-tmpDir="/tmp/Bing/"
-mkdir -p $picDir
-mkdir -p $tmpDir
 bing="www.bing.com"
 picRes="1920x1080"
 picExt=".jpg"
 mkt="zh-CN"
 
-if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ]
-then
-	setBG="gsettings set org.gnome.desktop.background picture-uri file://"
-elif [ "$XDG_CURRENT_DESKTOP" = "MATE" ]
-then
-	setBG="gsettings set org.mate.background picture-filename "
-elif [ "$XDG_CURRENT_DESKTOP" = "XFCE" ]
-then
-	setBG="xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s "
-elif [ "$XDG_CURRENT_DESKTOP" = "LXDE" ]
-then
-	setBG="pcmanfm --set-wallpaper="
+if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ];then
+    setBG="gsettings set org.gnome.desktop.background picture-uri file://"
+elif [ "$XDG_CURRENT_DESKTOP" = "MATE" ];then
+    setBG="gsettings set org.mate.background picture-filename "
+elif [ "$XDG_CURRENT_DESKTOP" = "XFCE" ];then
+    setBG="xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s "
+elif [ "$XDG_CURRENT_DESKTOP" = "LXDE" ];then
+    setBG="pcmanfm --set-wallpaper="
 else
-	setBG="feh --bg-scale "
+    setBG="feh --bg-scale "
+fi
+
+if [ ! -x "$picDir" ];then
+    mkdir -p $picDir 
 fi
 
 for idx in {0..7}
@@ -30,24 +27,23 @@ do
     picName=$(date -d "$day day" +"%Y-%m-%d.jpg")	
     xmlURL="http://www.bing.com/HPImageArchive.aspx?format=xml&idx=$idx&n=1&mkt=$mkt"
     picURL=$bing$(echo $(curl -s $xmlURL) | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)_$picRes$picExt
-    
-    if [ "$1" = "" ] 
-    then
-        curl -o $picDir$picName -L $picURL
+    if [ ! -f "$picDir$picName" ];then
+	curl -o $picDir$picName -L $picURL
+    fi
+    if [ "$1" = "" ];then
         $setBG$picDir$picName
-		notify-send "必应壁纸" "今日已更新"
-		exit
-	fi
-    curl -o $tmpDir$picName -L $picURL
+	notify-send "必应壁纸" "今日已更新"
+	exit
+    fi
+    picWeek[idx]=$picDir$picName
 done
 
-if [ "$1" = "week" ]
-then
+if [ "$1" = "week" ];then
     rewid=$(echo `xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'` | sed -r 's/x.*//')
     rehei=$(echo $(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/') | sed -r  's/.*x//')
     swid=$(echo "$rewid / 8"|bc)
     shei=$(echo "$swid / 1.7"|bc)
     bwid=$rewid
     bhei=$(echo "$shei + 10"|bc)
-    feh -B black -x -g $bwid"x"$bhei"+"$rewid"+"$rehei -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei $tmpDir -A ";cp $tmpDir%n $picDir ;$setBG$picDir%n" 
+    feh -B black -x -g $bwid"x"$bhei"+"$rewid"+"$rehei -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n" 
 fi
