@@ -23,16 +23,15 @@ fi
 
 for idx in {0..7}
 do
-    day=$(echo "$idx * -1"|bc)
-    picName=$(date -d "$day day" +"%Y-%m-%d.jpg")	
     xmlURL="http://www.bing.com/HPImageArchive.aspx?format=xml&idx=$idx&n=1&mkt=$mkt"
     picURL=$bing$(echo $(curl -s $xmlURL) | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)_$picRes$picExt
+    picName=${picURL##*/}
     if [ ! -f "$picDir$picName" ];then
 	curl -o $picDir$picName -L $picURL
     fi
     if [ "$1" = "" ];then
     	$setBG$picDir$picName
-	notify-send "必应壁纸" "今日已更新"
+	notify-send "必应壁纸" "今日更新壁纸$picName"
 	exit
     fi
     picWeek[idx]=$picDir$picName
@@ -45,5 +44,5 @@ if [ "$1" = "week" ];then
     shei=$(echo "$swid / 1.7"|bc)
     bwid=$rewid
     bhei=$(echo "$shei + 10"|bc)
-    feh -B black -x -g $bwid"x"$bhei"+"$rewid"+"$rehei -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n" 
+    feh -B black -x -g $bwid"x"$bhei"+"$rewid"+"$rehei -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n ;notify-send "必应壁纸" "已更换壁纸$picName"" 
 fi
