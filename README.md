@@ -29,7 +29,7 @@ Next boots it will run too, but do nothing.
 
         # Default behavior
         ~/.local/bin/bingwallpaper #每日壁纸更新
-        ~/.local/bin/bingwallpaper 1 #一周壁纸巡览
+        ~/.local/bin/bingwallpaper week #一周壁纸巡览
 
         # First param is Market
         # Second param is true to exit immediately if you want to use a cron
