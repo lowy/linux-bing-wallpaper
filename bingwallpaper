@@ -25,7 +25,8 @@ for idx in {0..7}
 do
     xmlURL="http://www.bing.com/HPImageArchive.aspx?format=xml&idx=$idx&n=1&mkt=$mkt"
     picURL=$bing$(echo $(curl -s $xmlURL) | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)_$picRes$picExt
-    picName=${picURL##*/}
+    firstName=${picURL##*/}
+    picName=${firstName%%_*}$picExt
     if [ ! -f "$picDir$picName" ];then
 	curl -o $picDir$picName -L $picURL
     fi
@@ -37,7 +38,7 @@ do
     picWeek[idx]=$picDir$picName
 done
 
-if [ "$1" = "week" ];then
+if [ "$1" = "-w" ];then
     rewid=$(echo `xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'` | sed -r 's/x.*//')
     rehei=$(echo $(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/') | sed -r  's/.*x//')
     swid=$(echo "$rewid / 8"|bc)
