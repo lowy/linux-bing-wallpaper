@@ -1,5 +1,5 @@
 #!/bin/bash
-picDir="$HOME/Wallpaper/Bing/"
+picDir="$HOME/Wallpaper/"
 bing="www.bing.com"
 picRes="1920x1080"
 picExt=".jpg"
