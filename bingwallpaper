@@ -49,11 +49,11 @@ do
 done
 
 if [ "$1" = "-w" ];then
-	rewid=$(echo `xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'` | sed -r 's/x.*//')
-	rehei=$(echo $(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/') | sed -r  's/.*x//')
-	swid=$(echo "$rewid / 8"|bc)
+	width=$(echo `xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'` | sed -r 's/x.*//')
+	height=$(echo $(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/') | sed -r  's/.*x//')
+	swid=$(echo "$width / 8"|bc)
 	shei=$(echo "$swid / 1.7"|bc)
-	bwid=$rewid
+	bwid=$width
 	bhei=$(echo "$shei + 10"|bc)
-	feh -B black -x -g $bwid"x"$bhei"+"$rewid"+"$rehei -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n ;notify-send "必应壁纸" "已更换壁纸$picName"" 
+	feh -B black -x -g $bwid"x"$bhei"+"$width"+"$height -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n ;notify-send "必应壁纸" "已更换壁纸$picName"" 
 fi
