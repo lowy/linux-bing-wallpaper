@@ -27,7 +27,7 @@ Next boots it will run too, but do nothing.
         chmod +x ~/.local/bin/bingwallpaper
         
         # Add application startup items
-        mkdir -p ~/.icons/
+        mkdir ~/.icons/
         wget -P ~/.icons/ https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bing.png
         mkdir -p ~/.local/share/applications/
         wget -P ~/.local/share/applications/ https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper.desktop 
