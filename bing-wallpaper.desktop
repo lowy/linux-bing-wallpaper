@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Comment=The Bing Wallpapers
+Name=Bing Wallpaper
+Name[zh_CN]=必应壁纸
+Exec=/home/lowy/.local/bin/bingwallpaper -w
+Icon=bing.png
+Categories=Network
+Terminal=false
