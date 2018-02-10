@@ -22,22 +22,21 @@ Next boots it will run too, but do nothing.
 
 ## Easy commands
 
-        cd ~/.local/
-        mkdir ./bin
-        wget https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper -o ./bin/bingwallpaper
-        chmod +x ./bin/bingwallpaper
+        mkdir ~/.local/bin/
+        wget https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper -o ~/.local/bin/bingwallpaper
+        chmod +x ~/.local/bin/bingwallpaper
 
         # Default behavior
-        ~/.local/bin/bingwallpaper #每日壁纸更新
+        ~/.local/bin/bingwallpaper -t #每日壁纸更新
         ~/.local/bin/bingwallpaper -w #一周壁纸巡览
 
         # First param is Market
         # Second param is true to exit immediately if you want to use a cron
         # (otherwise, script will sleep 24 hrs)
-        ~/.local/bin/bingwallpaper true
+        ~/.local/bin/bingwallpaper -t true
 
 ## Example cron usage (crontab -e for your user)
 ```
 # m h dom mon dow command
-* * * * * ~/.local/bin/bingwallpaper true
+* * * * * ~/.local/bin/bingwallpaper -t true
 ```
