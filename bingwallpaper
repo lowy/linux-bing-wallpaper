@@ -40,7 +40,7 @@ do
 	if [ ! -f "$picDir$picName" ];then
 		curl -o $picDir$picName -L $picURL
 	fi
-	if [ "$1" = "" ];then
+	if [ "$1" = "-t" ];then
 		$setBG$picDir$picName
 		notify-send "必应壁纸" "今日更新壁纸$picName"
 		exit
