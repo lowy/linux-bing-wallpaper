@@ -22,7 +22,7 @@ Next boots it will run too, but do nothing.
 
 ## Easy commands
 
-        mkdir ~/.local/bin/
+        mkdir -p ~/.local/bin/
         wget https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper -o ~/.local/bin/bingwallpaper
         chmod +x ~/.local/bin/bingwallpaper
 
