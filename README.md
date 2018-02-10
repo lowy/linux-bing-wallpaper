@@ -25,7 +25,14 @@ Next boots it will run too, but do nothing.
         mkdir -p ~/.local/bin/
         wget https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper -o ~/.local/bin/bingwallpaper
         chmod +x ~/.local/bin/bingwallpaper
-
+        
+        # Add application startup items
+        mkdir -p ~/.icons/
+        wget https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bing.png -o ~/.icons/bing.png
+        mkdir -p ~/.local/share/applications/
+        wget https://raw.githubusercontent.com/lowy/linux-bing-wallpaper/master/bingwallpaper.desktop -o ~/.local/share/applications/bingwallpaper.desktop
+        chmod +x ~/.local/share/applications/bingwallpaper.desktop
+        
         # Default behavior
         ~/.local/bin/bingwallpaper -t #每日壁纸更新
         ~/.local/bin/bingwallpaper -w #一周壁纸巡览
