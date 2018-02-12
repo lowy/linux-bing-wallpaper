@@ -20,6 +20,10 @@ So next time you boot your computer for the first time a day, it'll run once.
 
 Next boots it will run too, but do nothing.
 
+<img src="screenshots/screenshot1.png?raw=true" title="screenshot1" />
+
+<img src="screenshots/screenshot2.png?raw=true" title="screenshot2" />
+
 ## Easy commands
 
         mkdir -p ~/.local/bin/
@@ -35,10 +39,7 @@ Next boots it will run too, but do nothing.
         
         # Default behavior
         ~/.local/bin/bingwallpaper -t #每日壁纸更新
-		<img src="screenshots/screenshot.png?raw=true" title="screenshot" />
-
 		~/.local/bin/bingwallpaper -w #一周壁纸巡览
-		<img src="screenshots/screenshot2.png?raw=true" title="screenshot2" />
 
         # First param is Market
         # Second param is true to exit immediately if you want to use a cron
