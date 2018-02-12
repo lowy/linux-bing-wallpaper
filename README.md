@@ -35,7 +35,10 @@ Next boots it will run too, but do nothing.
         
         # Default behavior
         ~/.local/bin/bingwallpaper -t #每日壁纸更新
-        ~/.local/bin/bingwallpaper -w #一周壁纸巡览
+		<img src="screenshots/screenshot.png?raw=true" title="screenshot" />
+
+		~/.local/bin/bingwallpaper -w #一周壁纸巡览
+		<img src="screenshots/screenshot2.png?raw=true" title="screenshot2" />
 
         # First param is Market
         # Second param is true to exit immediately if you want to use a cron
