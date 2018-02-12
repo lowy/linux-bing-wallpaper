@@ -54,6 +54,6 @@ if [ "$1" = "-w" ];then
 	swid=$(echo "$width / 8"|bc)
 	shei=$(echo "$swid / 1.7"|bc)
 	bwid=$width
-	bhei=$(echo "$shei + 10"|bc)
+	bhei=$(echo "$shei + 5"|bc)
 	feh -B black -x -g $bwid"x"$bhei"+"$width"+"$height -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n ;notify-send "必应壁纸" "已更换壁纸$picName"" 
 fi
