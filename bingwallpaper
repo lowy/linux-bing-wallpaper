@@ -7,7 +7,7 @@ mkt="zh-CN"
 
 wget -q --spider https://www.bing.com
 if [ $? != 0 ]; then
-	notify-send "必应壁纸无响应" "请检查网络是否连接" 
+	notify-send -i bing "必应壁纸无响应" "请检查网络是否连接" 
 	exit
 fi
 
@@ -27,33 +27,29 @@ else
 	setBG="feh --bg-scale "
 fi
 
-if [ ! -x "$picDir" ];then
-	mkdir -p $picDir 
-fi
-
 for idx in {0..7}
 do
-	xmlURL="http://www.bing.com/HPImageArchive.aspx?format=xml&idx=$idx&n=1&mkt=$mkt"
-	picURL=$bing$(echo $(curl -s $xmlURL) | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)_$picRes$picExt
-	firstName=${picURL##*/}
+    xmlURL="https://www.bing.com/HPImageArchive.aspx?format=xml&idx=$idx&n=1&mkt=$mkt"
+    picURL=$bing$(echo $(curl -s $xmlURL) | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)_$picRes$picExt
+    firstName=${picURL##*/}
 	picName=${firstName%%_*}$picExt
 	if [ ! -f "$picDir$picName" ];then
 		curl -o $picDir$picName -L $picURL
 	fi
 	if [ "$1" = "-t" ];then
 		$setBG$picDir$picName
-		notify-send "必应壁纸" "今日更新壁纸$picName"
+		notify-send -i bing "必应壁纸今日更新" "$picName"
 		exit
 	fi
 	picWeek[idx]=$picDir$picName
 done
 
 if [ "$1" = "-w" ];then
-	width=$(echo `xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'` | sed -r 's/x.*//')
-	height=$(echo $(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/') | sed -r  's/.*x//')
-	swid=$(echo "$width / 8"|bc)
-	shei=$(echo "$swid / 1.7"|bc)
-	bwid=$width
-	bhei=$(echo "$shei + 5"|bc)
-	feh -B black -x -g $bwid"x"$bhei"+"$width"+"$height -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n ;notify-send "必应壁纸" "已更换壁纸$picName"" 
+    width=$(echo `xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'` | sed -r 's/x.*//')
+    height=$(echo $(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/') | sed -r  's/.*x//')
+    swid=$(echo "$width / 8"|bc)
+    shei=$(echo "$swid / 1.7"|bc)
+    bwid=$width
+    bhei=$(echo "$shei + 5"|bc)
+    feh -B black -x -g $bwid"x"$bhei"+"$width"+"$height -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n ;notify-send -i bing "必应壁纸一周巡览" "$picName"" 
 fi
