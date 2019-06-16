@@ -1,14 +1,24 @@
 #!/bin/bash
-picDir="$HOME/Wallpaper/"
-bing="www.bing.com"
-picRes="1920x1080"
-picExt=".jpg"
-mkt="zh-CN"
 
 wget -q --spider https://www.bing.com
 if [ $? != 0 ]; then
 	notify-send -i bing "必应壁纸无响应" "请检查网络是否连接" 
 	exit
+fi
+
+fbl=$(echo `xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'`)
+width=$(echo ${fbl%x*})
+height=$(echo ${fbl#*x})
+
+picDir="$HOME/BingWallpapers/"
+tmpDir="/tmp/BingTempic/"
+bing="www.bing.com"
+picRes="1920x1080"
+picExt=".jpg"
+mkt="zh-CN"
+
+if [ ! -x "$tmpDir" ];then
+	mkdir -p $tmpDir 
 fi
 
 if [ ! -x "$picDir" ];then
@@ -20,7 +30,8 @@ if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ];then
 elif [ "$XDG_CURRENT_DESKTOP" = "MATE" ];then
 	setBG="gsettings set org.mate.background picture-filename "
 elif [ "$XDG_CURRENT_DESKTOP" = "XFCE" ];then
-	setBG="xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image -s "
+	monster=$(echo `xrandr --listactivemonitors | grep "+\*" | grep $width  | grep $height | cut -f 6 -d " "` )
+	setBG="xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor"$monster"/workspace0/last-image -s "
 elif [ "$XDG_CURRENT_DESKTOP" = "LXDE" ];then
 	setBG="pcmanfm --set-wallpaper="
 else
@@ -31,25 +42,24 @@ for idx in {0..7}
 do
     xmlURL="https://www.bing.com/HPImageArchive.aspx?format=xml&idx=$idx&n=1&mkt=$mkt"
     picURL=$bing$(echo $(curl -s $xmlURL) | grep -oP "<urlBase>(.*)</urlBase>" | cut -d ">" -f 2 | cut -d "<" -f 1)_$picRes$picExt
-    firstName=${picURL##*/}
-	picName=${firstName%%_*}$picExt
-	if [ ! -f "$picDir$picName" ];then
-		curl -o $picDir$picName -L $picURL
-	fi
-	if [ "$1" = "-t" ];then
-		$setBG$picDir$picName
-		notify-send -i bing "必应壁纸今日更新" "$picName"
-		exit
-	fi
-	picWeek[idx]=$picDir$picName
+    firstName=${picURL##*OHR.}
+    picName=${firstName%%_*}$picExt
+    if [ ! -f "$tmpDir$picName" ];then
+	curl -o $tmpDir$picName -L $picURL
+    fi
+    if [ "$1" = "-t" ];then
+	cp $tmpDir$picName $picDir$picName
+	$setBG$picDir$picName
+	notify-send -i bing "必应壁纸今日更新" "$picName"
+	exit
+    fi
+    picWeek[idx]=$tmpDir$picName
 done
 
 if [ "$1" = "-w" ];then
-    width=$(echo `xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'` | sed -r 's/x.*//')
-    height=$(echo $(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/') | sed -r  's/.*x//')
     swid=$(echo "$width / 8"|bc)
     shei=$(echo "$swid / 1.7"|bc)
     bwid=$width
     bhei=$(echo "$shei + 5"|bc)
-    feh -B black -x -g $bwid"x"$bhei"+"$width"+"$height -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";$setBG$picDir%n ;notify-send -i bing "必应壁纸一周巡览" "$picName"" 
+    feh -B black -x -g $bwid"x"$bhei"+"$width"+"$height -N -t --index-info "" -y $swid -E $shei -W $bwid -H $bhei ${picWeek[*]} -A ";cp $tmpDir%n $picDir%n ;$setBG$picDir%n ;notify-send -i bing "必应壁纸一周巡览" "$picName"" 
 fi
